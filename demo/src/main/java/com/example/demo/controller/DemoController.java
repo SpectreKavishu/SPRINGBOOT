@@ -6,18 +6,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/api")
 public class DemoController {
 
-    @GetMapping("/greet")
-    public String greet(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return "Hello, " + name + "!";
-    }
+	@GetMapping("/greet")
+	@Operation(summary = "Get a greeting message", description = "Returns default message")
+	public String greet(@RequestParam(defaultValue = "World") String name) {
+		return "Hello, " + name + "!";
+	}
 
-    @GetMapping("/greet/{name}")
-    public String greetWithPathVariable(@PathVariable String name) {
-        return "Hello, " + name + "!";
-    }
+	@GetMapping("/greet/{name}")
+	@Operation(summary = "Get a greeting message", description = "Returns a personalized greeting based on the name provided")
+	public String greetWithPathVariable(@PathVariable String name) {
+		return "Hello, " + name + "!";
+	}
 }
-
