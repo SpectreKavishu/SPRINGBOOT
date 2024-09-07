@@ -18,6 +18,11 @@ public class UserViewController {
 		this.userService = userService;
 	}
 
+	@GetMapping("/")
+	public String getHomePage() {
+		return "homePage";
+	}
+	
 	@GetMapping("/users")
 	public String getUsers(Model model) {
 		List<User> users = userService.getAllUsers();
