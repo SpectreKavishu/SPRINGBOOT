@@ -4,7 +4,8 @@ import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
-
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
 	private final UserService userService;
 
@@ -75,7 +77,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody User user) {
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		User createdUser = userService.createUser(user);
 		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
@@ -97,4 +99,13 @@ public class UserController {
 		User updatedUser = userService.patchUser(id, updates);
 		return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 	}
+	
+	// private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	// Annotate your class with @Slf4j. This will generate a static Logger field named log
+
+    @GetMapping("/test")
+    public String testLogging() {
+        log.info("Test logging endpoint hit");
+        return "Logging test completed";
+    }
 }
