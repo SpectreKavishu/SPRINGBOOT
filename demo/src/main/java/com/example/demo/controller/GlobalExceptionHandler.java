@@ -9,10 +9,16 @@ import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	// Handle a specific exception, e.g., EntityNotFoundException
+	
+	// Handles a specific exception
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
         return new ResponseEntity<>("Entity not found: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIAException(IllegalArgumentException ex) {
+    	return new ResponseEntity<>("Argument not found: " + ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     // Handle general exceptions (Fallback)
