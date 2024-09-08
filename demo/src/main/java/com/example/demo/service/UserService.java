@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
+import com.example.demo.model.UserCreatedEvent;
 import com.example.demo.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +17,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 	private final UserRepository userRepository;
+	private final KafkaTemplate<String, UserCreatedEvent> kafkaTemplate;
+	
+	@Value("${kafka.topic}")
+    private String userCreatedTopic;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, KafkaTemplate<String, UserCreatedEvent> kafkaTemplate) {
 		this.userRepository = userRepository;
+		this.kafkaTemplate = kafkaTemplate;
 	}
 
 	public List<User> getAllUsers() {
@@ -29,6 +37,15 @@ public class UserService {
 
 	public User createUser(User user) {
 		return userRepository.save(user);
+		
+	}
+	
+	public User createUserKafka(User user) {
+		userRepository.save(user);
+		// Publish UserCreatedEvent to Kafka (asynchronous)
+        UserCreatedEvent event = new UserCreatedEvent(user.getId(), user.getName(), user.getEmail());
+        kafkaTemplate.send(userCreatedTopic, event);
+        return userRepository.save(user);
 	}
 	
 	// Method to update an existing user

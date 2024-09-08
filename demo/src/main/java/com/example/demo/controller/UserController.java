@@ -78,7 +78,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		User createdUser = userService.createUser(user);
+		User createdUser = userService.createUserKafka(user);
 		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
 
