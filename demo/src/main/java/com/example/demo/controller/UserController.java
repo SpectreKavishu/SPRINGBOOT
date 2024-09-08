@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +21,11 @@ public class UserController {
 	@GetMapping
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
+	}
+
+	@GetMapping("/{id}")
+	public User getUserById(@PathVariable Long id) {
+		return userService.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 	}
 
 	@PostMapping

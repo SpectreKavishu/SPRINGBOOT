@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 
@@ -29,4 +28,5 @@ public class UserViewController {
 		model.addAttribute("users", users);
 		return "userList";
 	}
+	
 }
