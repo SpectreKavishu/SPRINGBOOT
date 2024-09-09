@@ -18,7 +18,7 @@
 				user[key] = value;
 			});
 
-			fetch('http://localhost:8080/api/users', {
+			fetch('http://localhost:8083/api/users', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -51,7 +51,7 @@
 		        return;
 		    }
 
-		    fetch(`http://localhost:8080/api/users/${userId}`, {
+		    fetch(`http://localhost:8083/api/users/${userId}`, {
 		        method: 'DELETE',
 		        headers: {
 		            'Content-Type': 'application/json',
@@ -63,12 +63,8 @@
 		                throw new Error(text || 'Network response was not ok');
 		            });
 		        }
-		        return response.json();
-		    })
-		    .then(data => {
-		        console.log('Success:', data);
-		        // Reload the page on success
-		        window.location.reload(true); // Force reload from the server
+		        console.log('Success');
+				window.location.reload(true);
 		    })
 		    .catch((error) => {
 		        console.error('Error:', error);
