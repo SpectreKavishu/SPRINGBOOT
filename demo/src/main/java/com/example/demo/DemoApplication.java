@@ -5,6 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+// @Configuration, @EnableAutoConfiguration, @Configuration -> @SpringBootApplication 
+// (This is a convenience annotation that is equivalent to declaring @SpringBootConfiguration, 
+// @EnableAutoConfiguration and @ComponentScan.)
+
 @SpringBootApplication
 @ComponentScan(basePackages = "com.example.demo")
 @EnableJpaRepositories(basePackages = "com.example.demo.repository")
