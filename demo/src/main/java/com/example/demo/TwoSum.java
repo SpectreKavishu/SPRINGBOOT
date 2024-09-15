@@ -219,44 +219,36 @@ class DuplicateCharacterCount {
 
 class LiftTripCount {
 	public static void main(String[] args) {
-		int[] array1 = { 1, 2, 3 };
-		int[] array = { 2, 2, 2, 2 };
+		int[] array = { 1, 2, 3, 3, 3 };
+		int[] arrayx = { 2, 2, 2, 2 };
 		int N = array.length;
-		int K = 5;
+		int K = 2;
 		calculateTrips(N, K, array);
 	}
-
+	
 	static int calculateTrips(int N, int K, int[] array) {
-		int count = 0;
+        Map<Integer, Integer> map = new HashMap<>();
 
-		Map<Integer, Integer> map = new HashMap<>();
+        // Count the number of people on each floor
+        for (int x : array) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
 
-		for (int x : array) {
-			if (map.containsKey(x)) {
-				map.put(x, map.getOrDefault(x, 0) + 1);
-			} else {
-				map.put(x, 1);
-			}
-		}
-		// System.out.println(map);
+        // Print the number of floors
+        int floorCount = map.size();
+        System.out.println("No. of floors: " + floorCount);
 
-		int floorCount = map.size();
-		System.out.println("No. of floors: " + floorCount);
+        // Calculate the number of trips needed
+        int totalTrips = 0;
 
-		Set<Integer> floors = map.keySet();
-		List<Integer> myList = new ArrayList<>(floors);
+        for (int personCount : map.values()) {
+            int tripsForFloor = (personCount + K - 1) / K;  // This formula calculates the ceiling of personCount / K
+            totalTrips += tripsForFloor;
+        }
 
-		for (int i = 0; i < floorCount; i++) {
-			int personCount = map.get(myList.get(i));
-			if (personCount <= K) {
-				count += 1;
-			} else {
-				count = personCount - K;
-			}
-		}
+        System.out.println("Trips: " + totalTrips);
 
-		System.out.println("Trips: " + count);
+        return totalTrips;
+    }
 
-		return count;
-	}
 }
