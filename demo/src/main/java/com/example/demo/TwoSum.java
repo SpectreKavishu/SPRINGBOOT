@@ -1,13 +1,19 @@
 package com.example.demo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class TwoSum {
 	public int[] twoSum(int[] nums, int target) {
@@ -40,34 +46,34 @@ public class TwoSum {
 		int[] result = ts.twoSum(nums, target);
 		System.out.println("Indices: " + result[0] + ", " + result[1]);
 		System.out.println("Pair: " + nums[result[0]] + ", " + nums[result[1]]);
-		
+
 		// Create a Stack of integers
-        Stack<Integer> stack = new Stack<>();
-        
-        // Push elements onto the stack
-        stack.push(10);
-        stack.push(20);
-        stack.push(30);
-        
-        // Display the stack elements
-        System.out.println("\nStack after pushing elements:");
-        stack.display();
-        
-        // Peek the top element
-        System.out.println("\nTop element is: " + stack.peek());
-        
-        // Pop the top element
-        System.out.println("\nPopped element: " + stack.pop());
-        
-        // Display the stack after popping
-        System.out.println("\nStack after popping an element:");
-        stack.display();
-        
-        // Check if the stack is empty
-        System.out.println("\nIs stack empty? " + stack.isEmpty());
-        
-        // Display the current size of the stack
-        System.out.println("Current stack size: " + stack.size());
+		Stack<Integer> stack = new Stack<>();
+
+		// Push elements onto the stack
+		stack.push(10);
+		stack.push(20);
+		stack.push(30);
+
+		// Display the stack elements
+		System.out.println("\nStack after pushing elements:");
+		stack.display();
+
+		// Peek the top element
+		System.out.println("\nTop element is: " + stack.peek());
+
+		// Pop the top element
+		System.out.println("\nPopped element: " + stack.pop());
+
+		// Display the stack after popping
+		System.out.println("\nStack after popping an element:");
+		stack.display();
+
+		// Check if the stack is empty
+		System.out.println("\nIs stack empty? " + stack.isEmpty());
+
+		// Display the current size of the stack
+		System.out.println("Current stack size: " + stack.size());
 	}
 
 }
@@ -142,41 +148,115 @@ class SemaphoreExample {
 
 class Stack<T> {
 	// FILO or LIFO
-	
+
 	LinkedList<T> list = new LinkedList<>();
-	
+
 	void push(T data) {
 		list.addLast(data);
 	}
-	
+
 	T pop() {
-        if (!list.isEmpty()) {
-            return list.removeLast();  // Remove and return the last element (top of the stack)
-        }
-        throw new RuntimeException("Stack is empty!");
-    }
-	
+		if (!list.isEmpty()) {
+			return list.removeLast(); // Remove and return the last element (top of the stack)
+		}
+		throw new RuntimeException("Stack is empty!");
+	}
+
 	T peek() {
-        if (!list.isEmpty()) {
-            return list.getLast();  // Get the last element (top of the stack) without removing
-        }
-        throw new RuntimeException("Stack is empty!");
-    }
-	
+		if (!list.isEmpty()) {
+			return list.getLast(); // Get the last element (top of the stack) without removing
+		}
+		throw new RuntimeException("Stack is empty!");
+	}
+
 	boolean isEmpty() {
-        return list.isEmpty();
-    }
-	
+		return list.isEmpty();
+	}
+
 	// Get the size of the stack
-    int size() {
-        return list.size();
-    }
-	
+	int size() {
+		return list.size();
+	}
+
 	void display() {
-		for(T item : list) {
+		for (T item : list) {
 			System.out.println(item);
 		}
 	}
-	
-	
-} 
+
+}
+
+class DuplicateFinder {
+	public static void main(String[] args) {
+
+		int[] array = { 1, 3, 1, 5, 2, 1, 2, 5, 7, 5, 1, 4 };
+
+		java.util.List<Integer> a = List.of(1, 3, 1, 5, 2, 1, 2, 5, 7, 5, 1, 4);
+
+		Map<Integer, Long> duplicates = Arrays.stream(array).boxed()
+				.collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()));
+
+		System.out.println(a.stream().collect(Collectors.groupingBy(Integer::intValue, Collectors.counting())));
+
+		System.out.println(duplicates);
+
+	}
+}
+
+class DuplicateCharacterCount {
+	public static void main(String[] args) {
+		String s = "test";
+
+		long duplicateCount = s.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.groupingBy(c -> c, Collectors.counting())).values().stream()
+				.filter(count -> count > 1).count();
+
+		System.out.println("Number of duplicate characters: " + duplicateCount);
+		System.out.println(
+				s.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(c -> c, Collectors.counting())));
+	}
+}
+
+class LiftTripCount {
+	public static void main(String[] args) {
+		int[] array1 = { 1, 2, 3 };
+		int[] array = { 2, 2, 2, 2 };
+		int N = array.length;
+		int K = 5;
+		calculateTrips(N, K, array);
+	}
+
+	static int calculateTrips(int N, int K, int[] array) {
+		int count = 0;
+
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int x : array) {
+			if (map.containsKey(x)) {
+				map.put(x, map.getOrDefault(x, 0) + 1);
+			} else {
+				map.put(x, 1);
+			}
+		}
+		// System.out.println(map);
+
+		int floorCount = map.size();
+		System.out.println("No. of floors: " + floorCount);
+
+		Set<Integer> floors = map.keySet();
+		List<Integer> myList = new ArrayList<>(floors);
+
+		for (int i = 0; i < floorCount; i++) {
+			int personCount = map.get(myList.get(i));
+			if (personCount <= K) {
+				count += 1;
+			} else {
+				count = personCount - K;
+			}
+		}
+
+		System.out.println("Trips: " + count);
+
+		return count;
+	}
+}

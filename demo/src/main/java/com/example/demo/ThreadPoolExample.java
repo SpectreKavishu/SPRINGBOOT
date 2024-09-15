@@ -2,6 +2,7 @@ package com.example.demo;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +23,9 @@ public class ThreadPoolExample {
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		ExecutorService executor = Executors.newFixedThreadPool(3);
 		ExecutorService executor2 = Executors.newCachedThreadPool();
+		
+		String st = null;
+		System.out.println("string: "+Optional.ofNullable(st).orElse("Unknown"));
 
 		Callable<Integer> callableTask = () -> {
 			return 10;
@@ -94,6 +98,8 @@ public class ThreadPoolExample {
 		List<String> filteredAndUppercasedWords = words.stream().filter(lengthGreaterThan3).map(String::toUpperCase)
 				.collect(Collectors.toList());
 		System.out.println(filteredAndUppercasedWords);
+		System.out.println(filteredAndUppercasedWords.get(0));
+		System.out.println(words.stream().filter(lengthGreaterThan3).findFirst());
 
 		List<List<String>> listOfLists = Arrays.asList(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e"),
 				Arrays.asList("f", "g", "h"));

@@ -17,14 +17,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 	private final UserRepository userRepository;
-	private final KafkaTemplate<String, UserCreatedEvent> kafkaTemplate;
+	private final KafkaTemplate<String, UserCreatedEvent> kafkaTemplateOld;
 	
-	@Value("${kafka.topic}")
+	@Value("hello-world")
     private String userCreatedTopic;
 
 	public UserService(UserRepository userRepository, KafkaTemplate<String, UserCreatedEvent> kafkaTemplate) {
 		this.userRepository = userRepository;
-		this.kafkaTemplate = kafkaTemplate;
+		this.kafkaTemplateOld = kafkaTemplate;
 	}
 
 	public List<User> getAllUsers() {
@@ -44,7 +44,7 @@ public class UserService {
 		userRepository.save(user);
 		// Publish UserCreatedEvent to Kafka (asynchronous)
         UserCreatedEvent event = new UserCreatedEvent(user.getId(), user.getName(), user.getEmail());
-        kafkaTemplate.send(userCreatedTopic, event);
+        kafkaTemplateOld.send(userCreatedTopic, event);
         return userRepository.save(user);
 	}
 	
