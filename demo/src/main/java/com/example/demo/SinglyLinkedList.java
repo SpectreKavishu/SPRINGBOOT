@@ -74,7 +74,7 @@ public class SinglyLinkedList {
 		head = previous; // Update the head to the last node
 	}
 
-	// Detect if there's a cycle in the list
+	// Detect if there's a cycle in the list (Floyd’s Tortoise and Hare)
 	public boolean detectCycle() {
 		Node slow = head;
 		Node fast = head;
@@ -98,36 +98,38 @@ public class SinglyLinkedList {
 		}
 		current.next = head.next; // Create a cycle by linking last node to second node
 	}
-	
+
 	// Merge two sorted linked lists
-    public static SinglyLinkedList merge(SinglyLinkedList list1, SinglyLinkedList list2) {
-        Node dummy = new Node(0);  // Dummy node to simplify merging
-        Node tail = dummy;
-        Node head1 = list1.head;
-        Node head2 = list2.head;
+	public static SinglyLinkedList merge(SinglyLinkedList list1, SinglyLinkedList list2) {
+		Node dummy = new Node(0); // Dummy node to simplify merging
+		Node tail = dummy;
+		Node head1 = list1.head;
+		Node head2 = list2.head;
 
-        while (head1 != null && head2 != null) {
-            if (head1.data <= head2.data) {
-                tail.next = head1;
-                head1 = head1.next;
-            } else {
-                tail.next = head2;
-                head2 = head2.next;
-            }
-            tail = tail.next;
-        }
+		while (head1 != null && head2 != null) {
+			if (head1.data <= head2.data) {
+				tail.next = head1;
+				head1 = head1.next;
+			} else {
+				tail.next = head2;
+				head2 = head2.next;
+			}
+			tail = tail.next;
+		}
 
-        // Append the remaining nodes from either list
-        if (head1 != null) {
-            tail.next = head1;
-        } else {
-            tail.next = head2;
-        }
+		// Append the remaining nodes from either list
+		if (head1 != null) {
+			tail.next = head1;
+		} else {
+			tail.next = head2;
+		}
 
-        SinglyLinkedList mergedList = new SinglyLinkedList();
-        mergedList.head = dummy.next;  // Skip the dummy node
-        return mergedList;
-    }
+		SinglyLinkedList mergedList = new SinglyLinkedList();
+		mergedList.head = dummy.next; // Skip the dummy node
+		return mergedList;
+	}
+
+	// Find the intersection point of two linked lists
 
 	public static void main(String[] args) {
 		SinglyLinkedList obj = new SinglyLinkedList();
@@ -139,15 +141,15 @@ public class SinglyLinkedList {
 		obj.insertAtBegin(10);
 		obj.insert(40);
 		obj.display();
-		
+
 		obj2.insert(2);
 		obj2.insert(3);
 		obj2.display();
-		
+
 		obj2.insertAtBegin(1);
 		obj2.insert(4);
 		obj2.display();
-		
+
 		SinglyLinkedList.merge(obj, obj2).display();
 
 		// obj.delete(30);
@@ -158,5 +160,57 @@ public class SinglyLinkedList {
 
 		obj.createCycle();
 		System.out.println(obj.detectCycle());
+	}
+}
+
+class LinkedListIntersection {
+
+	public static Node getIntersectionNode(Node headA, Node headB) {
+		if (headA == null || headB == null) {
+			return null;
+		}
+
+		Node pointerA = headA;
+		Node pointerB = headB;
+
+		// Traverse both lists simultaneously until they meet
+		while (pointerA != pointerB) {
+			// If pointerA reaches the end, move it to the beginning of listB
+			if (pointerA == null) {
+				pointerA = headB;
+			} else {
+				pointerA = pointerA.next;
+			}
+
+			// If pointerB reaches the end, move it to the beginning of listA
+			if (pointerB == null) {
+				pointerB = headA;
+			} else {
+				pointerB = pointerB.next;
+			}
+		}
+
+		return pointerA; // At this point, both pointers are pointing to the intersection node
+	}
+
+	public static void main(String[] args) {
+		// Create two linked lists with an intersection point
+		Node headA = new Node(1);
+		headA.next = new Node(2);
+		headA.next.next = new Node(3);
+		headA.next.next.next = new Node(4);
+
+		Node headB = new Node(5);
+		headB.next = new Node(6);
+		headB.next.next = headA.next.next;
+
+		// Find the intersection point
+		Node intersectionNode = getIntersectionNode(headA, headB);
+
+		if (intersectionNode != null) {
+			System.out.println("Intersection point: " + intersectionNode.data);
+		} else {
+			System.out.println("No intersection point found.");
+		}
 	}
 }

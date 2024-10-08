@@ -42,6 +42,7 @@ public class UserController {
 	public ResponseEntity<User> getUserById2(@PathVariable Long id) {
 		User user = userService.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+		
 		// return new ResponseEntity<>(user, HttpStatus.OK);
 		// Create an ETag based on user attributes, such as ID and last modified date
 		String eTag = Integer.toHexString(user.hashCode()); // Or use a more complex strategy for ETag generation

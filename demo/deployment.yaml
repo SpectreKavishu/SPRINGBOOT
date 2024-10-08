@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-boot-api
+  template:
+    metadata:
+      labels:
+        app: spring-boot-api
+    spec:
+      containers:
+      - name: spring-boot-api
+        image: goyalk/spring-boot-api:latest
+        ports:
+        - containerPort: 8080  # Adjust if your app uses a different port
