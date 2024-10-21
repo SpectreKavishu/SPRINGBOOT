@@ -1,0 +1,3 @@
+# application.yml
+myapp:
+  message: "Hello from Config Server!"
